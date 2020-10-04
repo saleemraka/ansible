@@ -1,8 +1,10 @@
-[ubuntu]
-server1
-server2
-server3
+[ubuntu] 
+server1 apache_package=apache2 php_package=libapache2-mod-php
+server2 apache_package=apache2 php_package=libapache2-mod-php
+server3 apache_package=apache2 php_package=libapache2-mod-php
 
-[centos]
-server4
-server5
+[centos] 
+server4 apache_package=httpd php_package=php
+server5 apache_package=httpd php_package=php
+
+
