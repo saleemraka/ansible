@@ -3,6 +3,16 @@ server1 apache_package=apache2 php_package=libapache2-mod-php
 server2 apache_package=apache2 php_package=libapache2-mod-php
 server3 apache_package=apache2 php_package=libapache2-mod-php
 
+[web_servers]
+server1
+server2
+
+[db_servers]
+server3
+
+[file_servers]
+server4
+
 [centos] 
 server4 apache_package=httpd php_package=php
 server5 apache_package=httpd php_package=php
