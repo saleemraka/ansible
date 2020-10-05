@@ -5,19 +5,19 @@
   pre_tasks:
   
   
-  - name: install updates (CentOS) 
+  - name: update repo cache (CentOS) 
     tags: always
     yum:
-      update_only: yes
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "CentOS"
 
 
-  - name: install updates (Ubuntu)
+  - name: updates repo cache (Ubuntu)
     tags: always
     apt:
-      upgrade: dist
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Ubuntu"
 
   
@@ -77,6 +77,17 @@
       group: root
       mode: 0644
 
+- hosts: all
+  become: true
+  tasks:
+
+  - name: add ssh key for faris
+    tags: always
+    authorized_key:
+      user: faris
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCk9s0yPz09yQTPBFrVPpKxUYY0vvpxQQoyufgY31zPo/3w+blZYTl1EiuMKV1jDDIbtxaBWOrZlbFwJDWFblUNmuc0t+ArLofIfg3+hQjztPf6Xhd3Ya3+YoslmoXn102RCH/9DNOxWmXecDBfHhpwWSxYQBahrzmAv9/pU6Xkg0f2KgphPoKZgo5YqQGLOmYzXlSE/zJTw02g0IjXTQ+ndrzN5B4KXXlNoRZfDf8HZsdzAIjCj+IrSU3SEMbH2JRY1Pgfh+36EI3dW61GJz/IdikUrApImBoTAmW4CoYr+oJ1fYoaGHDOw3zgibWt+C6/6Se0QacwnCjsTKyv9br585JoKnJFleX1GXxS2tVS/tN1KRo58lpSBncvkmpUYzKzTs8zUEU/uC1VizgA+rQZDZ/s/piTsbT+B7h0xeblYV1s2bpRrA2XizZfqWjdXpK3vI5bJQqBziPaTMLAwJQD84+N4EtZKEjYOXf/9GXNya3dmXGd7aJLOh2X9i9h3r0= redhatlogo@localhost"
+
+  
 - hosts: workstation
   become: true
   tasks:
