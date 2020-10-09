@@ -21,122 +21,29 @@
     when: ansible_distribution == "Ubuntu"
 
   
-- hosts: web_servers
-  become: true
-  tasks:
-
-  - name: install apache2 and php packages for Ubuntu 
-    tags: webserver,apache2,ubuntu
-    apt:
-      name: 
-        - apache2
-        - libapache2-mod-php
-      state: latest
-    when: ansible_distribution == "Ubuntu"
-
-
-  - name: install httpd and php packages for Centos
-    tags: webserver,httpd,centos
-    yum:
-      name: 
-        - httpd
-        - php
-      state: latest
-    when: ansible_distribution == "CentOS"
-
-  - name: start httpd (CentOS)
-    tags: webserver,centos,httpd
-    service:
-      name: httpd
-      state: started
-    when: ansible_distribution == "CentOS"  
-
-  - name: change e-mail address for admin
-    tags: webserver,centos,httpd
-    lineinfile:
-      path: /etc/httpd/conf/httpd.conf
-      regexp: '^ServerAdmin'
-      line: ServerAdmin saleem.raka@gmail.com
-    when: ansible_distribution == "CentOS"
-    register: httpd #use it as variable to save the state of httpd state
-
-   
-  - name: restasrt httpd (CentOS)
-    tags: webserver,centos,httpd
-    service:
-      name: httpd
-      state: restarted
-    when: httpd.changed
-
-  - name: copy default html file for site
-    tags: webserver,apache2,httpd
-    copy: 
-      src: default_site.html
-      dest: /var/www/html/index.html
-      owner: root
-      group: root
-      mode: 0644
-
 - hosts: all
   become: true
-  tasks:
+  roles:
+    - base
 
-  - name: add ssh key for faris
-    tags: always
-    authorized_key:
-      user: faris
-      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCk9s0yPz09yQTPBFrVPpKxUYY0vvpxQQoyufgY31zPo/3w+blZYTl1EiuMKV1jDDIbtxaBWOrZlbFwJDWFblUNmuc0t+ArLofIfg3+hQjztPf6Xhd3Ya3+YoslmoXn102RCH/9DNOxWmXecDBfHhpwWSxYQBahrzmAv9/pU6Xkg0f2KgphPoKZgo5YqQGLOmYzXlSE/zJTw02g0IjXTQ+ndrzN5B4KXXlNoRZfDf8HZsdzAIjCj+IrSU3SEMbH2JRY1Pgfh+36EI3dW61GJz/IdikUrApImBoTAmW4CoYr+oJ1fYoaGHDOw3zgibWt+C6/6Se0QacwnCjsTKyv9br585JoKnJFleX1GXxS2tVS/tN1KRo58lpSBncvkmpUYzKzTs8zUEU/uC1VizgA+rQZDZ/s/piTsbT+B7h0xeblYV1s2bpRrA2XizZfqWjdXpK3vI5bJQqBziPaTMLAwJQD84+N4EtZKEjYOXf/9GXNya3dmXGd7aJLOh2X9i9h3r0= redhatlogo@localhost"
-
-  
-- hosts: workstation
+- hosts: workstations
   become: true
-  tasks:
-   
-  - name: Install unzip
-    package:
-      name: unzip
-  
-  - name: Install terraform
-    unarchive:
-      src: https://releases.hashicorp.com/terraform/0.13.4/terraform_0.13.4_linux_amd64.zip
-      dest: /usr/local/bin
-      remote_src: yes
-      owner: root
-      group: root
-      mode: 0755
-         
+  roles:
+    - workstations
+
+- hosts: web_servers
+  become: true
+  roles:
+    - web_servers
+
 - hosts: db_servers
   become: true
-  tasks:
-   
-  - name: install mariadb package (CentOS)
-    tags: db,mariadb,centos
-    yum:
-      name: mariadb
-      state: latest
-    when: ansible_distribution == "CentOS"
-
-  - name: install mariadb package (Ubuntu)
-    tags: db,ubuntu,mariadb
-    apt:
-      name: mariadb-server
-      state: latest
-    when: ansible_distribution == "Ubuntu"
-
+  roles:
+    - db_servers
 
 - hosts: file_servers
   become: true
-  tasks:
-
-  - name: install samba package 
-    tags: samba
-    package:
-      name: samba
-      state: latest
-
-
-  
-
-
+  roles:
+    - file_servers
 
 

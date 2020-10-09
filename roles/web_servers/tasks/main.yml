@@ -1,0 +1,25 @@
+- name: install apache2 and php packages for Ubuntu 
+  tags: webserver,apache2,ubuntu
+  apt:
+    name: 
+      - apache2
+      - libapache2-mod-php
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+
+- name: install httpd and php packages for Centos
+  tags: webserver,httpd,centos
+  yum:
+    name: 
+      - httpd
+      - php
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+- name: start httpd (CentOS)
+  tags: webserver,centos,httpd
+  service:
+    name: httpd
+    state: started
+  when: ansible_distribution == "CentOS"  
