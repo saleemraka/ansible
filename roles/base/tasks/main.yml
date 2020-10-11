@@ -2,3 +2,13 @@
   authorized_key:
     user: faris
     key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCk9s0yPz09yQTPBFrVPpKxUYY0vvpxQQoyufgY31zPo/3w+blZYTl1EiuMKV1jDDIbtxaBWOrZlbFwJDWFblUNmuc0t+ArLofIfg3+hQjztPf6Xhd3Ya3+YoslmoXn102RCH/9DNOxWmXecDBfHhpwWSxYQBahrzmAv9/pU6Xkg0f2KgphPoKZgo5YqQGLOmYzXlSE/zJTw02g0IjXTQ+ndrzN5B4KXXlNoRZfDf8HZsdzAIjCj+IrSU3SEMbH2JRY1Pgfh+36EI3dW61GJz/IdikUrApImBoTAmW4CoYr+oJ1fYoaGHDOw3zgibWt+C6/6Se0QacwnCjsTKyv9br585JoKnJFleX1GXxS2tVS/tN1KRo58lpSBncvkmpUYzKzTs8zUEU/uC1VizgA+rQZDZ/s/piTsbT+B7h0xeblYV1s2bpRrA2XizZfqWjdXpK3vI5bJQqBziPaTMLAwJQD84+N4EtZKEjYOXf/9GXNya3dmXGd7aJLOh2X9i9h3r0= redhatlogo@localhost"
+
+- name: generate sshd_config file from template
+  tags: ssh
+  template:
+    src: "{{ ssh_template_file }}"
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart_sshd
